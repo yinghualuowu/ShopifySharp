@@ -20,17 +20,26 @@ let ``Function signatures match what they are expected to be`` () =
     
 [<Fact>]
 let ``Serializes script tag properties to a dictionary`` () =
-    let dictionary =
+    let tag =
         ScriptTags.newScriptTag
         |> ScriptTags.src "https://example.com/tag.js"
-        |> ScriptTags.event OnLoad
-        |> ScriptTags.displayScope All
-        |> ScriptTags.toRawPropertyNames
-    let expected = Map [
-        "src" => "https://example.com/tag.js"
-        "event" => "onload"
-        "display_scope" => "all"
-    ]
+        |> ScriptTags.makePropertyNull ScriptTagProperty.Event
+        |> ScriptTags.removeProperty ScriptTagProperty.Event
+        
+    ()
+    
+    
+//    let dictionary =
+//        ScriptTags.newScriptTag
+//        |> ScriptTags.src "https://example.com/tag.js"
+//        |> ScriptTags.event OnLoad
+//        |> ScriptTags.displayScope All
+//        |> ScriptTags.toRawPropertyNames
+//    let expected = Map [
+//        "src" => "https://example.com/tag.js"
+//        "event" => "onload"
+//        "display_scope" => "all"
+//    ]
     
     Assert.Equal(expected, JsonValue.MapPropertyValuesToObjects dictionary)
     

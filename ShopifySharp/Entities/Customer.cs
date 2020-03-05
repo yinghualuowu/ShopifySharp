@@ -14,6 +14,8 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("accepts_marketing")]
         public bool? AcceptsMarketing { get; set; }
+        
+        public int Foo { get; set; }
 
         /// <summary>
         /// A list of addresses for the customer.
