@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using ShopifySharp.Infrastructure;
 using Newtonsoft.Json;
 using System.IO;
+using System.Net;
 using System.Threading;
 using ShopifySharp.Lists;
 using ShopifySharp.Filters;
@@ -23,7 +24,7 @@ namespace ShopifySharp
 
         private static JsonSerializer _Serializer = Serializer.JsonSerializer;
 
-        private static HttpClient _Client { get; } = new HttpClient();
+        private HttpClient Client { get; set; } = new HttpClient();
 
         protected Uri _ShopUri { get; set; }
 
@@ -84,6 +85,25 @@ namespace ShopifySharp
         {
             // If the user passes null, revert to the global execution policy.
             _ExecutionPolicy = executionPolicy ?? _GlobalExecutionPolicy ?? new DefaultRequestExecutionPolicy();
+        }
+
+        /// <summary>
+        /// Sets the client proxy
+        /// </summary>
+        /// <param name="webProxy"></param>
+        public void SetProxy(WebProxy webProxy)
+        {
+            if (webProxy == null)
+            {
+                throw new ArgumentException("webProxy is null");
+            }
+
+            var proxyHttpClientHandler = new HttpClientHandler
+            {
+                Proxy = webProxy,
+                UseProxy = true,
+            };
+            Client = new HttpClient(proxyHttpClientHandler);
         }
 
         /// <summary>
@@ -152,7 +172,7 @@ namespace ShopifySharp
             {
                 var policyResult = await _ExecutionPolicy.Run(baseRequestMessage, async (requestMessage) =>
                 {
-                    var request = _Client.SendAsync(requestMessage, cancellationToken);
+                    var request = Client.SendAsync(requestMessage, cancellationToken);
 
                     using (var response = await request)
                     {
@@ -195,7 +215,7 @@ namespace ShopifySharp
             {
                 var policyResult = await _ExecutionPolicy.Run(baseRequestMessage, async (requestMessage) =>
                 {
-                    var request = _Client.SendAsync(requestMessage, cancellationToken);
+                    var request = Client.SendAsync(requestMessage, cancellationToken);
 
                     using (var response = await request)
                     {

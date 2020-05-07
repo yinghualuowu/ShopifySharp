@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;netstandard1.4;net45</TargetFrameworks>
+    <TargetFrameworks>net4.6.1</TargetFrameworks>
     <AssemblyName>ShopifySharp</AssemblyName>
     <RootNamespace>ShopifySharp</RootNamespace>
     <VersionPrefix>5.1.0</VersionPrefix>
@@ -13,9 +13,12 @@
     <PackageProjectUrl>https://github.com/nozzlegear/shopifysharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nozzlegear/shopifysharp</RepositoryUrl>
     <PackageTags>shopify,ecommerce</PackageTags>
+    <Version>5.1.1.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="microsoft.extensions.primitives" Version="1.1.0" />
-    <PackageReference Include="newtonsoft.json" Version="10.0.1" />
+    <PackageReference Include="newtonsoft.json" Version="12.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
 </Project>
