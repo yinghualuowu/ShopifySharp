@@ -43,17 +43,34 @@ It's difficult to find blog posts or tutorials about building Shopify apps, and 
 ShopifySharp is [available on NuGet](https://www.nuget.org/packages/ShopifySharp/). Use the package manager
 console in Visual Studio to install it:
 
-```
+```pwsh
 Install-Package ShopifySharp
 ```
 
 If you're using .NET Core, you can use the `dotnet` command from your favorite shell:
 
-```
+```sh
 dotnet add package shopifysharp
 ```
 
-# Version 5.0.0
+If you're using Paket with an F# project, use this command:
+
+```sh
+paket add shopifysharp --project /path/to/project.fsproj
+```
+
+# API support
+
+Shopify has begun versioning their API, meaning new features are locked behind newer versions of the API, and older versions of the API lose support and are eventually shut off. Due to the differences in ShopifySharp's SemVer versioning, and Shopify's date-based versioning, the following table should be consulted to determine which version of ShopifySharp supports which version of Shopify's API:
+
+| ShopifySharp version | Shopify API version |
+| -------------------- | ------------------- |
+| 4.* and below        | None, unsupported   |
+| 5.0.0 - 5.5.0        | 2019-10             |
+| 5.6.0 - 5.7.0        | 2020-07             |
+| 5.8.0 and above      | 2020-10             |
+
+# Migrating from version 4.x to version 5.0.0
 
 **A complete migration guide for going from v4.x to v5.x is located here:** [https://nozzlegear.com/shopify/shopifysharp-version-5-migration-guide](https://nozzlegear.com/shopify/shopifysharp-version-5-migration-guide). The biggest change by far is the way you'll list objects in v5. Shopify has implemented a sort of "linked list" pagination, which means you _cannot_ request arbitrary pages any longer (e.g. "give me page 5 of orders").
 
@@ -138,6 +155,7 @@ ShopifySharp currently supports the following Shopify APIs:
 -   [Access Scopes](#access-scopes)
 -   [Checkouts](#checkouts)
 -   [Collections](#collections)
+-   [StorefrontAccessTokens](#storefrontaccesstokens)
 
 More functionality will be added each week until it reaches full parity with Shopify's REST API.
 
@@ -2512,6 +2530,38 @@ var collection = await service.GetAsync(collectionId);
 ```cs
 var service = new CollectionService(myShopifyUrl, shopAccessToken);
 var products = await service.ListAsync(collectionId);
+```
+
+## StorefrontAccessTokens
+
+You can use the StorefrontAccessToken resource to generate storefront access tokens. Storefront access tokens are used to delegate unauthenticated access scopes to clients that need to access the unautheticated Storefront API. A sales channel can generate a storefront access token and then pass it to a consuming client, such as JavaScript or a mobile application.
+
+**There is a hard limit of 100 tokens per Shopify store.**
+
+### Creating a StorefrontAccessToken
+
+To create a StorefrontAccessToken, you must pass in a title for the token. There are no constraints on the uniqueness of the title. 
+
+```cs
+var service = new StorefrontAccessTokenService(myShopifyUrl, shopAccessToken);
+var token = await service.CreateAsync("My storefront access token");
+```
+
+### Deleting a StorefrontAccessToken
+
+```cs
+var service = new StorefrontAccessTokenService(myShopifyUrl, shopAccessToken);
+
+await service.DeleteAsync(storefrontAccessTokenId);
+```
+
+### Listing StorefrontAccessTokens
+
+This endpoint is not paginated, because there is a limit of only 100 storefront access tokens per shop.
+
+```cs
+var service = new StorefrontAccessTokenService(myShopifyUrl, shopAccessToken);
+var list = await service.ListAsync();
 ```
 
 # Handling Shopify's API rate limit

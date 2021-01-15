@@ -68,6 +68,19 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("user_id")]
         public long? UserId { get; set; }
+
+        /// <summary>
+        /// A list of duties that have been returned as part of the refund.
+        /// </summary>
+        [JsonProperty("duties")]
+        public IEnumerable<RefundDuty> Duties { get; set; }
+
+        /// <summary>
+        /// A list of refunded duties
+        /// </summary>
+        [JsonProperty("refund_duties")]
+        public IEnumerable<RefundDutyType> RefundDuties { get; set; }
+        
     }
 
     public class Shipping
