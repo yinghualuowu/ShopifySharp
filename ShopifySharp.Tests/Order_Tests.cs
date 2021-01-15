@@ -91,7 +91,7 @@ namespace ShopifySharp.Tests
         public async Task Updates_Orders()
         {
             string note = "This note was updated while testing ShopifySharp!";
-            var created = await Fixture.Create();
+            var created = await Fixture.Service.GetAsync(2145125793890);
             long id = created.Id.Value;
 
             created.Note = note;
@@ -100,7 +100,7 @@ namespace ShopifySharp.Tests
             var updated = await Fixture.Service.UpdateAsync(id, created);
 
             // Reset the id so the Fixture can properly delete this object.
-            created.Id = id;
+            //created.Id = id;
 
             Assert.Equal(note, updated.Note);
         }

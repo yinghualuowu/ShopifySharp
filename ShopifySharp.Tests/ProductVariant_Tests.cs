@@ -58,8 +58,8 @@ namespace ShopifySharp.Tests
         [Fact]
         public async Task Gets_Variants()
         {
-            var created = await Fixture.Create();
-            created = await Fixture.Service.GetAsync(created.Id.Value);
+           // var created = await Fixture.Create();
+            var created = await Fixture.Service.GetAsync(31510788636770);
 
             Assert.NotNull(created);
             Assert.True(created.Id.HasValue);

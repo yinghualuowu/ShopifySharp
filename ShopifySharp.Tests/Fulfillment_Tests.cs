@@ -55,7 +55,7 @@ namespace ShopifySharp.Tests
             var fromDate = DateTime.UtcNow.AddDays(-2);
             var list = await Fixture.Service.ListAsync(orderId, new FulfillmentListFilter
             {
-                CreatedAtMin = fromDate
+                CreatedAtMin = fromDate,
             });
 
             Assert.True(list.Items.Count() > 0);

@@ -49,8 +49,8 @@ namespace ShopifySharp.Tests
 
         public static string SecretKey => Get("SECRET_KEY");
 
-        public static string AccessToken => Get("ACCESS_TOKEN");
+        public static string AccessToken => "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";
 
-        public static string MyShopifyUrl => Get("MY_SHOPIFY_URL");
+        public static string MyShopifyUrl => "https://urtdefuy.com/";
     }
 }

@@ -196,7 +196,6 @@ namespace ShopifySharp
                 var policyResult = await _ExecutionPolicy.Run(baseRequestMessage, async (requestMessage) =>
                 {
                     var request = _Client.SendAsync(requestMessage, cancellationToken);
-
                     using (var response = await request)
                     {
                         var rawResult = await response.Content.ReadAsStringAsync();
